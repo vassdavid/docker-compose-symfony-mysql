@@ -28,7 +28,7 @@ RUN install-php-extensions \
      intl \
      opcache \
      zip \
-     mongodb \
+     redis \
     ;
 
 WORKDIR /app
