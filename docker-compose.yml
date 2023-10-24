@@ -14,6 +14,7 @@ services:
       - APP_ENV=${APP_ENV}
       - APP_DEBUG=${APP_DEBUG}
       - DATABASE_URL=mysql://root:${MYSQL_ROOT_PASSWORD}@mysql:3306/symfony
+      - REDIS_URL=redis://redis
     volumes:
       - ${SOURCE_DIR}:/app
     depends_on:
@@ -37,6 +38,9 @@ services:
     container_name: ${PROJECT_NAME}-redis
     ports:
         - "6379:6379"
+    networks:
+      - backend
+      - default
 networks:
   backend:
   default:
