@@ -33,6 +33,8 @@ RUN install-php-extensions \
 ;
 
 WORKDIR /app
+COPY ./docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
 
 EXPOSE 9000
 
