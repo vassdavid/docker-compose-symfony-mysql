@@ -5,15 +5,27 @@ services:
     image: mysql:latest
     container_name: ${PROJECT_NAME}-mysql
     environment:
-      MYSQL_DATABASE:  ${MYSQL_DATABASE}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    networks:
+      - backend
+      - default
+    ports:
+      - 3306:3306
+    expose:
+      - 3306
+    volumes:
+      - my-db:/var/lib/mysql
   symfony:
     build: ./docker/image/symfony
     container_name: ${PROJECT_NAME}-symfony
     environment:
       - APP_ENV=${APP_ENV}
       - APP_DEBUG=${APP_DEBUG}
-      - DATABASE_URL=mysql://root:${MYSQL_ROOT_PASSWORD}@mysql:3306/symfony
+      - XDEBUG_MODE=coverage
+      - DATABASE_URL=mysql://root:${MYSQL_ROOT_PASSWORD}@mysql:3306/${MYSQL_DATABASE}
       - REDIS_URL=redis://redis
     volumes:
       - ${SOURCE_DIR}:/app
@@ -38,9 +50,10 @@ services:
     container_name: ${PROJECT_NAME}-redis
     ports:
         - "6379:6379"
-    networks:
+    networks: 
       - backend
-      - default
 networks:
   backend:
   default:
+volumes:
+  my-db:

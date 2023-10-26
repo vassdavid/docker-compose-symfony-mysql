@@ -20,15 +20,20 @@ RUN apk add --update -q --no-interactive \
     fcgi \
     file \
     gettext \
-    git
-
+    git \
+    pecl install redis\
+;
 
 RUN install-php-extensions \
      apcu \
      intl \
      opcache \
      zip \
-     redis \
-    ;
+     pdo_mysql \
+;
 
 WORKDIR /app
+
+#RUN bin/console doctrine:schema:create
+#RUN bin/console doctrine:fixtures:load
+#RUN bin/console lexik:jwt:generate-keypair --skip-if-exists
