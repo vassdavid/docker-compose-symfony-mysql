@@ -21,7 +21,6 @@ RUN apk add --update -q --no-interactive \
     file \
     gettext \
     git \
-    pecl install redis\
 ;
 
 RUN install-php-extensions \
@@ -30,10 +29,11 @@ RUN install-php-extensions \
      opcache \
      zip \
      pdo_mysql \
+     redis \
 ;
 
 WORKDIR /app
 
-#RUN bin/console doctrine:schema:create
-#RUN bin/console doctrine:fixtures:load
-#RUN bin/console lexik:jwt:generate-keypair --skip-if-exists
+EXPOSE 9000
+
+CMD ["php-fpm"]
